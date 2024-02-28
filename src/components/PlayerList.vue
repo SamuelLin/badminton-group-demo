@@ -74,10 +74,10 @@ const players = [
       <TableHeader>
         <TableRow>
           <TableHead class="w-[100px]">
-            Players
+            姓名
           </TableHead>
-          <TableHead class="w-[100px]">Level</TableHead>
-          <TableHead class="w-[100px]">場次</TableHead>
+          <TableHead class="w-[100px]">級別</TableHead>
+          <TableHead class="w-[100px]">上場數</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
