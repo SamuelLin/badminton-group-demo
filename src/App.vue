@@ -1,11 +1,22 @@
 <script setup lang="ts">
+import { Power } from 'lucide-vue-next'
+import { Button } from '@/components/ui/button'
 import Courts from '@/components/Courts.vue'
 import PlayerList from '@/components/PlayerList.vue'
 </script>
 
 <template>
   <div class="mx-auto max-w-7xl px-6 lg:px-8 py-10">
-    <h1 class="text-4xl mb-12">Badminton Group Demo</h1>
+    <div class="flex flex-col md:flex-row justify-between mb-12">
+      <h1 class="text-4xl flex-1">
+        Badminton Group Demo
+      </h1>
+      <Button variant="outline" class="text-red-500 hover:text-red-600 font-bold border-red-500 mt-4 md:mt-0">
+        <Power class="w-4 h-4 mr-2" /> 結束零打
+      </Button>
+    </div>
+    
+    
 
     <Courts />
 

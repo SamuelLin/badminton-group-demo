@@ -13,7 +13,12 @@ export interface Court {
 
 export const useCourtsStore = defineStore('courts', {
   state: () => {
-    const courts = ref<Court[]>([])
+    const courts = ref<Court[]>([
+      {
+        name: 'A',
+        players: []
+      }
+    ])
 
     function addCourt(court: Court) {
       courts.value.push(court)
