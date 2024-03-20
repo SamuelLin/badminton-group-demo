@@ -65,14 +65,14 @@ function addPlayer() {
   isDialogOpen.value = false
 }
 
-function editPlayer() {
+function updatePlayer() {
   if (editedPlayerData.value) {
     const editedPlayer = {
       ...editedPlayerData.value,
       name: newPlayerName.value,
       level: newPlayerLevel.value
     }    
-    playersStore.editPlayer(editedPlayer)
+    playersStore.updatePlayer(editedPlayer)
     isDialogOpen.value = false
   } 
 }
@@ -122,7 +122,7 @@ function openEdit(id: string) {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" :disabled="!isValid" @click="isEdit ? editPlayer() : addPlayer()">
+            <Button type="submit" :disabled="!isValid" @click="isEdit ? updatePlayer() : addPlayer()">
               {{ isEdit ? '儲存' : '加入' }}
             </Button>
           </DialogFooter>

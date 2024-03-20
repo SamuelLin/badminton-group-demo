@@ -17,7 +17,6 @@ import { useCourtsStore } from '@/stores/courts'
 import { Plus } from 'lucide-vue-next'
 
 const courtsStore = useCourtsStore()
-
 const newCourtName = ref('')
 
 const isDuplicateCourtName = computed(() => {
@@ -25,10 +24,7 @@ const isDuplicateCourtName = computed(() => {
 })
 
 function handleAddCourt() {
-  courtsStore.addCourt({
-    name: newCourtName.value,
-    players: []
-  })
+  courtsStore.addCourt(newCourtName.value)
   newCourtName.value = ''
 }
 </script>

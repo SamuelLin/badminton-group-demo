@@ -1,35 +1,46 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-
-interface Player {
-  name: string
-  level: number
-}
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Court {
+  id: string,
   name: string
-  players: Player[]
 }
 
 export const useCourtsStore = defineStore('courts', {
   state: () => {
     const courts = ref<Court[]>([
       {
-        name: 'A',
-        players: []
+        id: uuidv4(),
+        name: 'A'
       }
     ])
 
-    function addCourt(court: Court) {
-      courts.value.push(court)
+    const previewCourts = ref<Court[]>([
+      {
+        id: uuidv4(),
+        name: '預覽球場一'
+      },
+      {
+        id: uuidv4(),
+        name: '預覽球場二'
+      }
+    ])
+
+    function addCourt(name: string) {
+      courts.value.push({
+        id: uuidv4(),
+        name
+      })
     }
 
-    function deleteCourt(name: string) {
-      courts.value = courts.value.filter((court) => court.name !== name)
+    function deleteCourt(id: string) {
+      courts.value = courts.value.filter((court) => court.id !== id)
     }
 
     return {
       courts,
+      previewCourts,
       addCourt,
       deleteCourt
     }

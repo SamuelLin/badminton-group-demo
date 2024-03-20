@@ -2,7 +2,8 @@
 import { Power } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import Courts from '@/components/Courts.vue'
-import PlayerList from '@/components/PlayerList.vue'
+import Players from '@/components/Players.vue'
+import PreviewCourts from '@/components/PreviewCourts.vue'
 </script>
 
 <template>
@@ -15,18 +16,14 @@ import PlayerList from '@/components/PlayerList.vue'
         <Power class="w-4 h-4 mr-2" /> 結束零打
       </Button>
     </div>
-    
-    
 
     <Courts />
 
     <hr class="my-12 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
     
     <div class="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <PlayerList />
-      <div>
-        <!-- <Court v-for="p in 2" :key="p" :number="p" class="mb-4" preview/> -->
-      </div>
+      <Players />
+      <PreviewCourts />
     </div>
   </div>
 </template>
