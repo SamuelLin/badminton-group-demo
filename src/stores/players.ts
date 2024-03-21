@@ -14,14 +14,14 @@ export interface Player {
 export const usePlayersStore = defineStore('players', {
   state: () => {
     const players = ref<Player[]>([
-      { id: 'sadf', name: 'player 1', level: 7, gamesPlayed: 1, playersMatched: [], onCourt: false },
-      { id: 'sadf1', name: 'player 2', level: 3, gamesPlayed: 1, playersMatched: [], onCourt: false },
+      { id: 'sadf', name: 'player 1', level: 7, gamesPlayed: 0, playersMatched: [], onCourt: false },
+      { id: 'sadf1', name: 'player 2', level: 3, gamesPlayed: 0, playersMatched: [], onCourt: false },
       { id: 'sadf2', name: 'player 3', level: 5, gamesPlayed: 0, playersMatched: [], onCourt: false },
-      { id: 'sadf3', name: 'player 4', level: 6, gamesPlayed: 1, playersMatched: [], onCourt: false },
+      { id: 'sadf3', name: 'player 4', level: 6, gamesPlayed: 0, playersMatched: [], onCourt: false },
       { id: 'sadf4', name: 'player 5', level: 8, gamesPlayed: 0, playersMatched: [], onCourt: false },
       { id: 'sadf5', name: 'player 6', level: 4, gamesPlayed: 0, playersMatched: [], onCourt: false },
       { id: 'sadf6', name: 'player 7', level: 11, gamesPlayed: 0, playersMatched: [], onCourt: false },
-      { id: 'sadf7', name: 'player 8', level: 6, gamesPlayed: 1, playersMatched: [], onCourt: false },
+      { id: 'sadf7', name: 'player 8', level: 6, gamesPlayed: 0, playersMatched: [], onCourt: false },
       { id: 'sadf8', name: 'player 9', level: 2, gamesPlayed: 0, playersMatched: [], onCourt: false },
       { id: 'sadf9', name: 'player 10', level: 5, gamesPlayed: 0, playersMatched: [], onCourt: false },
     ])

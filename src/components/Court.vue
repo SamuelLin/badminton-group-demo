@@ -18,7 +18,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { Pencil, Volume2, X } from 'lucide-vue-next'
+import { Volume2, X } from 'lucide-vue-next'
 import { Court, useCourtsStore } from '@/stores/courts'
 import { usePlayersStore, Player } from '@/stores/players'
 

@@ -18,13 +18,23 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { usePlayersStore, Player } from '@/stores/players'
-import { Pencil } from 'lucide-vue-next'
+import { Pencil, Plus, UserRoundPlus, UserRoundX } from 'lucide-vue-next'
+import getLevelColor from '@/lib/getLevelColor'
 
 const playersStore = usePlayersStore()
-
 const isDialogOpen = ref(false)
 const newPlayerName = ref('')
 const newPlayerLevel = ref(0)
@@ -98,7 +108,10 @@ function openEdit(id: string) {
     <div class="text-right">
       <Dialog v-model:open="isDialogOpen">
         <DialogTrigger as-child>
-          <Button class="self-end">加入玩家</Button>
+          <Button class="self-end">
+            加入玩家
+            <UserRoundPlus class="w-4 h-4 ml-2" />
+          </Button>
         </DialogTrigger>
         <DialogContent class="sm:max-w-[425px]">
           <DialogHeader>
@@ -144,14 +157,45 @@ function openEdit(id: string) {
           <TableCell class="font-medium">
             {{ player.name }}
           </TableCell>
-          <TableCell>{{ player.level }}</TableCell>
+          <TableCell>
+            <div 
+              class="text-center rounded-lg border border-stone-100" 
+              :style="{ backgroundColor: getLevelColor(player.level) }"
+            >
+              {{ player.level }}
+            </div>
+          </TableCell>
           <TableCell>{{ player.gamesPlayed }}</TableCell>
           <TableCell>
-            <Button variant="ghost" class="text-red-700">skip</Button>
-            <Button variant="ghost" class="ml-2" @click="deletePlayer(player.id)">離開</Button>
-            <Button variant="ghost" class="ml-2" @click="openEdit(player.id)">
-              <Pencil class="w-3 h-3" />
+            <Button variant="ghost" class="ml-2">
+              <Plus class="w-4 h-4" />
             </Button>
+            <Button variant="ghost" class="ml-2" @click="openEdit(player.id)">
+              <Pencil class="w-4 h-4" />
+            </Button>
+
+            <AlertDialog>
+              <AlertDialogTrigger as-child>
+                <Button variant="ghost" class="ml-2 text-red-700">
+                  <UserRoundX class="w-4 h-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>你確定要刪除 {{ player.name }} ?</AlertDialogTitle>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>取消</AlertDialogCancel>
+                  <AlertDialogAction 
+                    class="bg-red-700 hover:bg-red-800" 
+                    @click="deletePlayer(player.id)"
+                  >
+                    刪除
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+
           </TableCell>
         </TableRow>
 
