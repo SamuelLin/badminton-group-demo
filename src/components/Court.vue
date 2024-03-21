@@ -32,7 +32,11 @@ const sortPlayersByLevel = computed(() =>
   playersStore.players.filter(p => p.onCourt === id).slice().sort((a, b) => b.level - a.level)
 )
 
-const isEmptyCourt = computed(() => {  
+const isCourtFull = computed(() => {  
+  return sortPlayersByLevel.value.length === 4
+})
+
+const isCourtEmpty = computed(() => {
   return sortPlayersByLevel.value.length === 0
 })
 
@@ -109,13 +113,13 @@ function removePlayer(player: Player) {
 </script>
 
 <template>
-  <Card>
+  <Card class="flex flex-col">
     <CardHeader>
       <CardTitle>
         <div class="flex justify-between items-center">
           <div>
             場地 {{ data.name }}
-            <Button v-if="!isEmptyCourt" variant="ghost" @click="speak">
+            <Button v-if="isCourtFull" variant="ghost" @click="speak">
               <Volume2 class="w-4 h-4" />
             </Button>
           </div>
@@ -138,29 +142,21 @@ function removePlayer(player: Player) {
         </div>
       </CardTitle>
     </CardHeader>
-    <CardContent class="text-center">
-      <template v-if="isEmptyCourt">
-        <p class="opacity-0">empty</p>
-        <p class="opacity-0">empty</p>
-        <p class="opacity-0">empty</p>
-        <p class="opacity-0">empty</p>
-      </template>
-      <template v-else>
-        <div v-for="player in sortPlayersByLevel" :key="player.name" class="flex items-center justify-center gap-1">
-          <p class="min-w-28">{{ `${player.name} (${player.level})` }}</p>
-          <Button variant="ghost" class="text-red-700" @click="removePlayer(player)">
-            <X class="w-3 h-3" />
-          </Button>
-        </div>
-      </template>
+    <CardContent class="text-center flex-1 min-h-20">
+      <div v-for="player in sortPlayersByLevel" :key="player.name" class="flex items-center justify-center gap-1">
+        <p class="min-w-28">{{ `${player.name} (${player.level})` }}</p>
+        <Button variant="ghost" class="text-red-700" @click="removePlayer(player)">
+          <X class="w-3 h-3" />
+        </Button>
+      </div>
     </CardContent>
     <CardFooter class="flex justify-between">
-      <template v-if="isEmptyCourt">
+      <template v-if="isCourtEmpty">
         <Button class="w-full" @click="goOnField">上場</Button>
       </template>
       <template v-else>
         <div></div>
-        <Button @click="finishCourt">結束</Button>
+        <Button :disabled="!isCourtFull" @click="finishCourt">結束</Button>
       </template>
     </CardFooter>
   </Card>

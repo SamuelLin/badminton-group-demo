@@ -13,6 +13,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogClose,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -21,6 +22,7 @@ import {
 import {
   AlertDialog,
   AlertDialogAction,
+  AlertDialogDescription,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
@@ -28,17 +30,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { usePlayersStore, Player } from '@/stores/players'
+import { useCourtsStore } from '@/stores/courts'
 import { Pencil, Plus, UserRoundPlus, UserRoundX } from 'lucide-vue-next'
 import getLevelColor from '@/lib/getLevelColor'
 
 const playersStore = usePlayersStore()
+const courtsStore = useCourtsStore()
 const isDialogOpen = ref(false)
 const newPlayerName = ref('')
 const newPlayerLevel = ref(0)
 const editedPlayerData = ref<Player | undefined>(undefined)
+
 
 const isEdit = computed(() => {
   return editedPlayerData.value !== undefined
@@ -57,7 +63,6 @@ const isValid = computed(() => {
     if (isDuplicate || isNameEmpty || isOutLevel) return false
     return true
   }
-  
 
   return !isDuplicatePlayerName.value && !isNameEmpty && !isOutLevel
 })
@@ -101,10 +106,32 @@ function openEdit(id: string) {
     isDialogOpen.value = true
   }
 }
+
+// Choose court dialog -------- start
+const courtId = ref('')
+
+function addToCourt(player: Player) {
+  playersStore.updatePlayer({
+    ...player,
+    onCourt: courtId.value
+  })
+  courtId.value = ''
+}
+
+function handleDialogClose(isOpen: Boolean) {
+  if (!isOpen) {
+    courtId.value = ''
+  }
+}
+// Choose court dialog -------- end
+
+function checkPlayerStatus(courtId: string | boolean | undefined) {
+  return courtsStore.courts.find(c => c.id === courtId)
+}
 </script>
 
 <template>
-  <div>
+  <div class="col-span-2">
     <div class="text-right">
       <Dialog v-model:open="isDialogOpen">
         <DialogTrigger as-child>
@@ -150,6 +177,7 @@ function openEdit(id: string) {
           </TableHead>
           <TableHead class="w-[100px]">級別</TableHead>
           <TableHead class="w-[100px]">上場數</TableHead>
+          <TableHead class="w-[100px]">狀態</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -167,9 +195,53 @@ function openEdit(id: string) {
           </TableCell>
           <TableCell>{{ player.gamesPlayed }}</TableCell>
           <TableCell>
-            <Button variant="ghost" class="ml-2">
-              <Plus class="w-4 h-4" />
-            </Button>
+            <div 
+              class="w-8 h-4 rounded-lg" 
+              :class="checkPlayerStatus(player.onCourt) ? 'bg-lime-500' : 'bg-gray-300'"
+            ></div>
+          </TableCell>
+          <TableCell>
+            <Dialog @update:open="handleDialogClose">
+              <DialogTrigger as-child>
+                <Button variant="ghost" class="ml-2">
+                  <Plus class="w-4 h-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent class="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>加入場地</DialogTitle>
+                  <DialogDescription>
+                    選擇上場場地或加入預覽球場
+                  </DialogDescription>
+                </DialogHeader>
+                <RadioGroup v-model="courtId">
+                  <div 
+                    v-for="court in courtsStore.previewCourts" 
+                    :key="court.id" 
+                    class="flex items-center space-x-2"
+                  >
+                    <RadioGroupItem :id="court.id" :value="court.id" :disabled="court.id === player.onCourt" />
+                    <Label :for="court.id">{{ court.name }}</Label>
+                  </div>
+                  <div 
+                    v-for="court in courtsStore.courts" 
+                    :key="court.id" 
+                    class="flex items-center space-x-2"
+                  >
+                    <RadioGroupItem :id="court.id" :value="court.id" :disabled="court.id === player.onCourt" />
+                    <Label :for="court.id">{{ court.name }}</Label>
+                  </div>
+                </RadioGroup>
+                <DialogFooter>
+                  <DialogClose as-child>
+                    <Button type="submit" :disabled="!courtId" @click="addToCourt(player)">
+                      加入場地
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+            
             <Button variant="ghost" class="ml-2" @click="openEdit(player.id)">
               <Pencil class="w-4 h-4" />
             </Button>
@@ -183,6 +255,9 @@ function openEdit(id: string) {
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>你確定要刪除 {{ player.name }} ?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    如果在正在場上的球員被消除，剩下的球員也不會完成場次
+                  </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>取消</AlertDialogCancel>

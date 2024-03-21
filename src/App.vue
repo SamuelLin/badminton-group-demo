@@ -21,7 +21,7 @@ import PreviewCourts from '@/components/PreviewCourts.vue'
 
     <hr class="my-12 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25 dark:opacity-100" />
     
-    <div class="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-4">
       <Players />
       <PreviewCourts />
     </div>
